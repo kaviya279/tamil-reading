@@ -1,43 +1,61 @@
-<!DOCTYPE html>
-<html lang="ta">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamil Reading</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; }
-        #sidebar { width: 200px; position: fixed; left: 0; top: 0; height: 100%; background: #333; color: white; padding-top: 20px; }
-        #sidebar a { display: block; color: white; padding: 10px; text-decoration: none; }
-        #content { margin-left: 220px; padding: 20px; }
-    </style>
-</head>
-<body>
-    <div id="sidebar">
-        <h2>Tamil Reading</h2>
-        <a href="#p1">P1</a>
-        <a href="#p2">P2</a>
-        <a href="#p3">P3</a>
-        <a href="#p4">P4</a>
-        <a href="#p5">P5</a>
-        <a href="#p6">P6</a>
+import { useState } from "react";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+
+const levels = ["P1", "P2", "P3", "P4", "P5", "P6"];
+
+const Sidebar = () => (
+  <div className="w-1/5 bg-gray-800 text-white h-screen p-4">
+    <h1 className="text-2xl font-bold mb-4">Tamil Reading</h1>
+    <ul>
+      {levels.map((level) => (
+        <li key={level} className="mb-2">
+          <Link to={`/${level}`} className="hover:text-yellow-400">{level}</Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const Content = ({ level }) => {
+  const content = {
+    P1: "\nநீங்கள் படிக்கவேண்டிய புத்தகங்கள்:\n\n- ஊதல்",
+    P2: "Content for P2 students will go here.",
+    P3: "Content for P3 students will go here.",
+    P4: "Content for P4 students will go here.",
+    P5: "Content for P5 students will go here.",
+    P6: "Content for P6 students will go here.",
+  };
+
+  return (
+    <div className="p-6">
+      <h2 className="text-3xl font-semibold">{level} Tamil Reading</h2>
+      <p className="mt-4">{content[level]}</p>
     </div>
-    <div id="content">
-        <h1>Welcome to Tamil Reading</h1>
-        <h2 id="p1">P1 Tamil Reading</h2>
-        <p>நீங்கள் படிக்கவேண்டிய புத்தகங்கள்:</p>
-        <ul>
-            <li>ஊதல்</li>
-        </ul>
-        <h2 id="p2">P2 Tamil Reading</h2>
-        <p>Content for P2 will be here.</p>
-        <h2 id="p3">P3 Tamil Reading</h2>
-        <p>Content for P3 will be here.</p>
-        <h2 id="p4">P4 Tamil Reading</h2>
-        <p>Content for P4 will be here.</p>
-        <h2 id="p5">P5 Tamil Reading</h2>
-        <p>Content for P5 will be here.</p>
-        <h2 id="p6">P6 Tamil Reading</h2>
-        <p>Content for P6 will be here.</p>
-    </div>
-</body>
-</html>
+  );
+};
+
+const HomePage = () => (
+  <div className="p-6 text-center">
+    <h2 className="text-3xl font-semibold">தமிழில் வாசிப்பதை ஊக்குவிப்போம்!</h2>
+    <p className="mt-4 text-lg">தமிழ் புத்தகங்களைப் படிப்பதன் மூலம் உங்கள் மொழித்திறனை மேம்படுத்துங்கள். வாசிப்பது மனதை திறந்து அறிவை அதிகரிக்கிறது!</p>
+    <p className="mt-2 text-lg">புதிய கதைகள், கவிதைகள் மற்றும் கட்டுரைகளை தொடர்ந்து வாசிக்க, இங்கு உள்ள படிப்புப் பட்டியலை அணுகவும்.</p>
+  </div>
+);
+
+export default function App() {
+  return (
+    <Router>
+      <div className="flex">
+        <Sidebar />
+        <div className="w-4/5 p-4">
+          <Routes>
+            {levels.map((level) => (
+              <Route key={level} path={`/${level}`} element={<Content level={level} />} />
+            ))}
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
+  );
+}
